@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #05231e;
+  --bg-secondary: #093730;
+  --bg-accent: #0f4f45;
+  --gold-primary: #d4af37;
+  --gold-light: #f3e5ab;
+  --paper-cream: #fbf8f1;
+  --paper-border: #e6dac3;
+  --text-dark: #2a241e;
+}
+
+body {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(15, 79, 69, 0.7) 0%, rgba(5, 35, 30, 0.95) 70%),
+    radial-gradient(circle at 10% 90%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(242, 100, 25, 0.08) 0%, transparent 40%);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animations */
+@keyframes bellSway {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(8deg); }
+}
+
+.animate-sway-left {
+  animation: bellSway 3s ease-in-out infinite alternate;
+  transform-origin: top center;
+}
+
+.animate-sway-right {
+  animation: bellSway 3s ease-in-out infinite alternate -1.5s;
+  transform-origin: top center;
+}
+
+@keyframes flameFlicker {
+  0% { transform: scale(0.95) rotate(-2deg); opacity: 0.9; }
+  50% { transform: scale(1.05) rotate(1deg); opacity: 1; }
+  100% { transform: scale(0.98) rotate(3deg); opacity: 0.95; }
+}
+
+.animate-flame {
+  animation: flameFlicker 1.2s ease-in-out infinite alternate;
+  transform-origin: center bottom;
+}
+
+/* 3D Flip Card Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+
+@keyframes pulseHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+
+.animate-heart {
+  display: inline-block;
+  animation: pulseHeart 1.8s infinite;
+}
+
+@keyframes soundWave {
+  0% { height: 3px; }
+  100% { height: 14px; }
+}
+
+.wave-bar-1 { animation: soundWave 0.8s ease-in-out infinite alternate; }
+.wave-bar-2 { animation: soundWave 1.1s ease-in-out infinite alternate 0.2s; }
+.wave-bar-3 { animation: soundWave 0.9s ease-in-out infinite alternate 0.4s; }
+.wave-bar-4 { animation: soundWave 1.2s ease-in-out infinite alternate 0.1s; }
