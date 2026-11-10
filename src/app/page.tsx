@@ -94,7 +94,7 @@ Happy Bhai Dooj, Gaurav! ❤️`);
   };
 
   return (
-    <main className="min-h-screen flex flex-col justify-between relative pb-20">
+    <main className="min-h-screen flex flex-col justify-between relative pb-36 sm:pb-28">
       <PetalCanvas />
 
       {/* Top Toran & Hanging Bells */}
@@ -236,32 +236,31 @@ Happy Bhai Dooj, Gaurav! ❤️`);
 
           {/* SPREAD 2: SCRAPBOOK */}
           {page === 2 && (
-            <div className="p-6 sm:p-10 flex flex-col justify-between min-h-[540px] bg-[#faf6ee]">
+            <div className="p-3.5 sm:p-8 flex flex-col justify-between min-h-[540px] bg-[#faf6ee]">
               <div>
                 <span className="text-[11px] font-bold text-amber-700 tracking-wider uppercase block mb-1">
                   SIBLING SCRAPBOOK
                 </span>
-                <h2 className="font-handwriting text-3xl font-bold text-stone-800 mb-4">
+                <h2 className="font-handwriting text-2xl sm:text-3xl font-bold text-stone-800 mb-3">
                   Little Moments, Big Memories with {brotherName}
                 </h2>
                 <Scrapbook brotherName={brotherName} />
               </div>
 
-              <div className="flex justify-between items-center pt-4 border-t border-stone-200">
+              <div className="flex justify-between items-center pt-4 border-t border-stone-200 mt-4 mb-2">
                 <button
                   onClick={() => handlePageChange(1)}
-                  className="text-xs font-bold text-stone-600 hover:text-stone-900 flex items-center gap-1"
+                  className="px-3.5 py-1.5 rounded-full bg-stone-200/90 hover:bg-stone-300 text-stone-700 text-xs font-bold flex items-center gap-1 transition-all"
                 >
                   <ChevronLeft size={14} />
-                  <span>Back to Rasmein</span>
+                  <span>Back</span>
                 </button>
-                <div className="text-[11px] text-stone-400">Page 4 &amp; 5</div>
+                <div className="text-[11px] font-medium text-stone-500">Page 4 &amp; 5</div>
                 <button
                   onClick={() => handlePageChange(3)}
-                  className="text-xs font-bold text-teal-800 hover:text-rose-800 flex items-center gap-1"
+                  className="px-4 py-2 rounded-full bg-gradient-to-r from-teal-900 to-teal-800 hover:from-teal-850 hover:to-teal-750 text-amber-200 font-bold text-xs flex items-center gap-1.5 shadow-md hover:scale-105 transition-all"
                 >
-                  <span>Read My Letter to You</span>
-                  <ChevronRight size={14} />
+                  <span>Read My Letter ➔</span>
                 </button>
               </div>
             </div>

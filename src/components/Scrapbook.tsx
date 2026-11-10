@@ -6,7 +6,17 @@ interface ScrapbookProps {
   brotherName: string;
 }
 
-const defaultMemories = [
+interface MemoryItem {
+  id: number;
+  title: string;
+  icon: string;
+  hint: string;
+  tilt: string;
+  image: string;
+  note: string;
+}
+
+const defaultMemories: MemoryItem[] = [
   {
     id: 1,
     title: "Partner in Every Celebration 🎈",
@@ -65,6 +75,7 @@ const defaultMemories = [
 
 export function Scrapbook({ brotherName }: ScrapbookProps) {
   const [flipped, setFlipped] = useState<{ [key: number]: boolean }>({});
+  const [selectedMemory, setSelectedMemory] = useState<MemoryItem | null>(null);
 
   const toggleFlip = (id: number) => {
     setFlipped((prev) => ({
@@ -82,7 +93,7 @@ export function Scrapbook({ brotherName }: ScrapbookProps) {
         </span>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4 mb-4">
         {defaultMemories.map((mem) => {
           const isFlipped = !!flipped[mem.id];
           return (
@@ -92,12 +103,12 @@ export function Scrapbook({ brotherName }: ScrapbookProps) {
               className={`perspective-1000 cursor-pointer ${mem.tilt} transition-transform hover:scale-105`}
             >
               <div
-                className={`relative w-full aspect-[4/5] transition-transform duration-500 preserve-3d ${
+                className={`relative w-full aspect-[3/4.6] sm:aspect-[4/5] min-h-[245px] sm:min-h-[265px] transition-transform duration-500 preserve-3d ${
                   isFlipped ? "rotate-y-180" : ""
                 }`}
               >
                 {/* FRONT SIDE */}
-                <div className="absolute inset-0 bg-white p-2 pb-3 rounded shadow-md backface-hidden flex flex-col justify-between">
+                <div className="absolute inset-0 bg-white p-2 pb-2.5 rounded-lg shadow-md backface-hidden flex flex-col justify-between">
                   <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-8 h-2.5 bg-amber-200/80 shadow-sm z-10" />
                   <div className="w-full aspect-square bg-[#ede3cc] rounded overflow-hidden relative shadow-inner">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -116,18 +127,38 @@ export function Scrapbook({ brotherName }: ScrapbookProps) {
                 </div>
 
                 {/* BACK SIDE (SECRET NOTE) */}
-                <div className="absolute inset-0 bg-[#fffef7] border-2 border-amber-300/70 p-3 rounded shadow-md backface-hidden rotate-y-180 flex flex-col justify-between text-left">
+                <div className="absolute inset-0 bg-[#fffef7] border-2 border-amber-300/80 p-2.5 sm:p-3 rounded-lg shadow-md backface-hidden rotate-y-180 flex flex-col justify-between text-left">
                   <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-8 h-2.5 bg-amber-300/80 shadow-sm z-10" />
-                  <div className="flex items-center gap-1 text-rose-800 text-[10px] font-bold pb-1 border-b border-amber-200/60 uppercase tracking-wider">
-                    <span>💌</span>
-                    <span>Secret Note for {brotherName || "Gaurav"}</span>
+                  
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between text-rose-800 text-[10px] font-bold pb-1 border-b border-amber-200/60 uppercase tracking-wider shrink-0">
+                    <span className="flex items-center gap-1 truncate">
+                      <span>💌</span>
+                      <span className="truncate">Secret Note</span>
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedMemory(mem);
+                      }}
+                      className="text-[9px] bg-amber-100 hover:bg-amber-200 text-amber-900 px-1.5 py-0.5 rounded border border-amber-300 font-sans font-semibold shrink-0"
+                      title="Read in Full Screen"
+                    >
+                      🔍 Zoom
+                    </button>
                   </div>
-                  <p className="font-handwriting text-stone-800 text-xs sm:text-sm leading-relaxed my-auto">
-                    &ldquo;{mem.note}&rdquo;
-                  </p>
-                  <div className="flex justify-between items-center text-[10px] text-amber-700/80 pt-1 border-t border-amber-200/50 font-medium">
-                    <span>— Snehal ❤️</span>
-                    <span className="italic text-[9px] text-stone-400">↺ tap to flip</span>
+
+                  {/* Card Body - Guaranteed visible text */}
+                  <div className="my-auto py-1.5 overflow-y-auto max-h-[145px] pr-0.5">
+                    <p className="font-serif italic font-semibold text-stone-900 text-[11px] sm:text-[13px] leading-snug sm:leading-relaxed text-left">
+                      &ldquo;{mem.note}&rdquo;
+                    </p>
+                  </div>
+
+                  {/* Card Footer */}
+                  <div className="flex justify-between items-center text-[10px] text-amber-800 pt-1 border-t border-amber-200/50 font-medium shrink-0">
+                    <span className="font-bold">— Snehal ❤️</span>
+                    <span className="italic text-[9px] text-stone-500">↺ tap to flip</span>
                   </div>
                 </div>
               </div>
@@ -136,9 +167,58 @@ export function Scrapbook({ brotherName }: ScrapbookProps) {
         })}
       </div>
 
-      <div className="text-center p-2.5 bg-amber-50/70 border border-amber-200/60 rounded-xl text-xs font-serif italic text-amber-900">
+      <div className="text-center p-3 bg-amber-50/80 border border-amber-200 rounded-xl text-xs sm:text-sm font-serif italic text-amber-900 shadow-sm">
         ❤️ &ldquo;God gave me just one brother, and He made sure you were the absolute best, {brotherName || "Gaurav"}.&rdquo;
       </div>
+
+      {/* FULL-SCREEN ZOOM MODAL FOR MOBILE COMFORT */}
+      {selectedMemory && (
+        <div
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in"
+          onClick={() => setSelectedMemory(null)}
+        >
+          <div
+            className="bg-[#fffef9] border-2 border-amber-400 rounded-2xl max-w-sm w-full p-5 text-left relative shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedMemory(null)}
+              className="absolute top-3 right-3 text-stone-600 hover:text-stone-900 p-1.5 rounded-full bg-stone-100 hover:bg-stone-200"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+
+            <div className="w-full aspect-[4/3] rounded-xl overflow-hidden mb-3 border border-amber-200 shadow-inner">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={selectedMemory.image}
+                alt={selectedMemory.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 uppercase tracking-wider mb-2">
+              <span>💌</span>
+              <span>Secret Memory Note</span>
+            </div>
+
+            <p className="font-serif italic font-medium text-stone-900 text-sm sm:text-base leading-relaxed mb-4 p-3.5 bg-amber-50/80 rounded-xl border border-amber-200/70">
+              &ldquo;{selectedMemory.note}&rdquo;
+            </p>
+
+            <div className="flex justify-between items-center text-xs font-semibold text-stone-700 border-t border-amber-200/80 pt-2.5">
+              <span>With all my love, Snehal ❤️</span>
+              <button
+                onClick={() => setSelectedMemory(null)}
+                className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-500 text-stone-900 rounded-full font-bold text-xs shadow"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
